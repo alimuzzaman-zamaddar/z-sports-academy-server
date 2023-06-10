@@ -51,6 +51,7 @@ async function run() {
     const paymentCollection = client.db('sportsDB').collection('payments');
     const selectedClassCollection = client.db('sportsDB').collection('select');
     const instructorClassCollection = client.db('sportsDB').collection('instructor');
+    const popularInstructorClassCollection = client.db('sportsDB').collection('popularInstructor');
 
 
 
@@ -68,6 +69,12 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/popularInstructor', async(req,res) => {
+      const result = await popularInstructorClassCollection.find().toArray();
+      res.send(result)
+    })
+
+    //class apis
     app.get('/class',async(req,res)=> {
         const result = await classCollection.find().toArray();
         res.send(result)
