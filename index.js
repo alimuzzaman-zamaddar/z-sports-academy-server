@@ -7,14 +7,9 @@ const stripe = require("stripe")(process.env.PAYMENT_KEY);
 const port = process.env.PORT || 5000;
 
 
-const corsOptions ={
-  origin:'*', 
-  credentials:true,
-  optionSuccessStatus:200,
-}
 
 // middleware
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 const verifyJWT = (req, res, next) => {
@@ -39,7 +34,9 @@ const verifyJWT = (req, res, next) => {
 };
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wjtuflr.mongodb.net/?retryWrites=true&w=majority`;
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wjtuflr.mongodb.net/?retryWrites=true&w=majority`;
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.fmznhrh.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -60,17 +57,13 @@ async function run() {
     const usersCollection = client.db("sportsDB").collection("users");
     const paymentCollection = client.db("sportsDB").collection("payments");
     const selectedClassCollection = client.db("sportsDB").collection("select");
-    const instructorClassCollection = client
-      .db("sportsDB")
-      .collection("instructor");
-    const popularInstructorClassCollection = client
-      .db("sportsDB")
-      .collection("popularInstructor");
+    const instructorClassCollection = client.db("sportsDB").collection("instructor");
+    const popularInstructorClassCollection = client.db("sportsDB").collection("popularInstructor");      
 
     app.post("/jwt", (req, res) => {
       const user = req.body;
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "30d",
       });
 
       res.send({ token });
@@ -296,7 +289,7 @@ async function run() {
 
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
