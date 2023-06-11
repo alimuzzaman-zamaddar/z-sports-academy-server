@@ -277,6 +277,24 @@ async function run() {
       res.send({ insertResult, deleteResult,paidResult,updatePaidResult });
     });
 
+
+    //payments apis
+    app.get('/payments',async(req,res) => {
+      const result = await paymentCollection.find().sort({date: -1}).toArray();
+      res.send(result)
+    })
+
+    app.get('/paid', async(req,res) => {
+      const result = await paidCollection.find().toArray();
+      res.send(result);
+    })
+
+
+
+
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
