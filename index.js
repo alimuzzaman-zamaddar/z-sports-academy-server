@@ -81,6 +81,7 @@ async function run() {
       res.send(result);
     });
 
+    //class apis
     app.get("/class", async (req, res) => {
       const result = await classCollection.find().toArray();
       res.send(result);
